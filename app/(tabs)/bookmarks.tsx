@@ -1,16 +1,16 @@
+import { AppText } from '@/src/components/common';
+import CourseCard from '@/src/components/course/CourseCard';
+import { useBookmarks } from '@/src/hooks/useBookmarks';
 import { useAppSelector } from '@/src/redux/hook';
+import { Colors } from '@/src/theme/colors';
+import { Icon } from '@/src/theme/icons';
+import { GlobalStyles } from '@/src/theme/styles.global';
+import { Course } from '@/src/types';
 import { LegendList } from '@legendapp/list';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AppText } from '../../src/components/common/AppText';
-import CourseCard from '../../src/components/course/CourseCard';
-import { useBookmarks } from '../../src/hooks/useBookmarks';
-import { Colors } from '../../src/theme/colors';
-import { Icon } from '../../src/theme/icons';
-import { GlobalStyles } from '../../src/theme/styles.global';
-import { Course } from '../../src/types';
 
 export default function BookmarksScreen() {
   const router = useRouter();
@@ -19,13 +19,14 @@ export default function BookmarksScreen() {
   const allCourses = useAppSelector((s) => s.courses.items);
 
   const bookmarkedCourses = useMemo(
-    () => allCourses.filter((c : { id: string }) => bookmarkIds.includes(c.id)),
+    () => allCourses.filter((c: { id: string }) => bookmarkIds.includes(c.id)),
     [allCourses, bookmarkIds],
   );
 
   const handlePress = useCallback(
     (course: Course) => {
-      router.push({ pathname: '/courses/[id]', params: { id: course.id } });
+      // ✅ fixed: was '/courses/[id]' — must match actual file at app/(tabs)/courses/[id].tsx
+      router.push({ pathname: '/(tabs)/courses/[id]', params: { id: course.id } });
     },
     [router],
   );

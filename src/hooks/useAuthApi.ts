@@ -1,8 +1,10 @@
+import { clearBookmarks } from '@/src/redux/slices/bookmark.slice';
+import { clearCourses } from '@/src/redux/slices/course.slice';
 import {
   showSnackbarError,
   showSnackbarSuccess,
 } from '@/src/redux/slices/snackbar.slice';
-import { setUser } from '@/src/redux/slices/user.slice';
+import { clearUser, setUser } from '@/src/redux/slices/user.slice';
 import {
   changeAvatarService,
   getCurrentUserService,
@@ -72,22 +74,35 @@ export const useAuthApi = (): UseAuthApiReturn => {
       setIsLoading(true);
       const data = await registerService(payload);
 
-      // Safe logging: avoid passing complex/native objects directly to console
-      try {
-        const serialized = JSON.stringify(data);
-      } catch (e) {
-      }
-
       if (data.success) {
-        const { user } = data.data;
+        const { accessToken, refreshToken, user } = data.data;
 
-        if(user){
-          dispatch(showSnackbarSuccess({ message: 'Account created successfully!' }));
-          return true;
+        if (accessToken && refreshToken) {
+          await saveAccessToken(accessToken);
+          await saveRefreshToken(refreshToken);
         }
 
-        // Backend didn't return tokens (e.g. requires email verification first)
-        dispatch(showSnackbarSuccess({ message: data.message || 'Registration successful. Please verify your email.' }));
+        if (user) {
+          dispatch(
+            setUser({
+              id: user._id,
+              username: user.username,
+              email: user.email,
+              avatarUrl: user.avatar?.url ?? '',
+              isEmailVerified: user.isEmailVerified,
+            }),
+          );
+        }
+
+        dispatch(setAuthorizationStatus(Boolean(accessToken)));
+
+        dispatch(
+          showSnackbarSuccess({
+            message: accessToken
+              ? 'Account created successfully!'
+              : data.message || 'Registration successful. Please verify your email.',
+          }),
+        );
         return true;
       }
       return false;
@@ -102,9 +117,12 @@ export const useAuthApi = (): UseAuthApiReturn => {
   const logout = async (): Promise<boolean> => {
     try {
       setIsLoading(true);
-      await logoutService().catch(() => { }); // best-effort server logout
+      await logoutService().catch(() => {}); // best-effort server logout
       await clearAuthTokens();
       await clearAppData();
+      dispatch(clearUser());
+      dispatch(clearBookmarks());
+      dispatch(clearCourses());
       dispatch(setAuthorizationStatus(false));
       return true;
     } finally {

@@ -8,6 +8,7 @@ import {
 import * as Notifications from 'expo-notifications';
 import { useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
+import { AppState } from 'react-native';
 import { saveLastActiveAt } from '../utils/localStorageKey';
 
 // Mount once in the root authenticated layout.
@@ -69,6 +70,15 @@ export const useAppActiveTracker = (): void => {
       await cancelInactivityNotification();
       await scheduleInactivityNotification();
     };
+
     track();
+
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        track();
+      }
+    });
+
+    return () => subscription.remove();
   }, []);
 };

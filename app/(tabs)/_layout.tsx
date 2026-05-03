@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/src/redux/hook';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Tabs } from 'expo-router';
-import React from 'react';
+import { Tabs, useRouter } from 'expo-router';
+import React, { useEffect } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { AppText } from '../../src/components/common/AppText';
@@ -144,7 +144,14 @@ const CustomTabBar: React.FC<BottomTabBarProps & { bookmarkCount: number }> = ({
 };
 
 export default function TabsLayout() {
+  const router = useRouter();
   const bookmarkCount = useAppSelector((s) => s.bookmarks.ids.length);
+  const { isAuthorized, isBootstrapping } = useAppSelector((s) => s.auth);
+
+  useEffect(() => {
+    if (isBootstrapping) return;
+    if (!isAuthorized) router.replace('/(auth)/login');
+  }, [isAuthorized, isBootstrapping, router]);
 
   return (
     <Tabs

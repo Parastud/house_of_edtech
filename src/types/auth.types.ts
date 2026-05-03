@@ -17,6 +17,7 @@ export interface AuthTokens {
 export interface AuthResponse {
   statusCode: number;
   data: {
+    data: any;
     _id: string | null | undefined;
     username: string | undefined;
     email: string | undefined;

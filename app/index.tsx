@@ -24,14 +24,14 @@ export default function Index() {
         if (token) {
           const userData = await getCurrentUserService();
           if (userData.success) {
-            const { data } = userData;
+            const user = userData.data.data;
             dispatch(
               setUser({
-                id: data._id,
-                username: data.username,
-                email: data.email,
-                avatarUrl: data.avatar?.url ?? '',
-                isEmailVerified: data.isEmailVerified,
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                avatarUrl: user.avatar?.url ?? '',
+                isEmailVerified: user.isEmailVerified,
               }),
             );
             dispatch(setAuthorizationStatus(true));
