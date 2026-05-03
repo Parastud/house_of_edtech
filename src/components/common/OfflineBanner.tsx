@@ -10,23 +10,27 @@ import { AppText } from './AppText';
 export const OfflineBanner: React.FC = () => {
   const { isConnected } = useAppSelector((s) => s.network);
   const insets = useSafeAreaInsets();
-  const translateY = useRef(new Animated.Value(-60)).current;
+  const bannerHeight = insets.top + 44;
+  const translateY = useRef(new Animated.Value(-bannerHeight)).current;
 
   useEffect(() => {
     Animated.spring(translateY, {
-      toValue: isConnected ? -60 : 0,
+      toValue: isConnected ? -bannerHeight : 0,
       useNativeDriver: true,
       tension: 80,
       friction: 12,
     }).start();
-  }, [isConnected]);
+  }, [isConnected, bannerHeight]);
 
   return (
     <Animated.View
       style={[
         styles.banner,
-        { paddingTop: insets.top + 8 },
-        { transform: [{ translateY }] },
+        {
+          paddingTop: insets.top + 8,
+          height: bannerHeight,
+          transform: [{ translateY }],
+        },
       ]}
       pointerEvents="none"
     >
