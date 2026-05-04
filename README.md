@@ -18,15 +18,15 @@ A production-grade Learning Management System built with React Native Expo, Type
 
 | Splash | Login | Courses |
 |--------|-------|---------|
-| ![Splash](assets/screenshots/splash.png) | ![Login](assets/screenshots/login.png) | ![Courses](assets/screenshots/courses.png) |
+| ![Splash](https://media.discordapp.net/attachments/717998252602949632/1500845330139185252/Screenshot_2026-05-04-18-28-26-728_com.parastud.houseofedtech.jpg?ex=69f9eaa3&is=69f89923&hm=c72669a6fece0bbc84d67225f45585c82fdb656137a55933e0adf5758a483b8b&=&format=webp&width=401&height=890) | ![Login](https://media.discordapp.net/attachments/717998252602949632/1500845330592301277/Screenshot_2026-05-04-18-28-40-054_com.parastud.houseofedtech.jpg?ex=69f9eaa3&is=69f89923&hm=08f25c60752d20ab305db7170cb81ae7e6ced126e7aea06b55b4a8aef485b13e&=&format=webp&width=401&height=890) | ![Courses](https://media.discordapp.net/attachments/717998252602949632/1500845331037028382/Screenshot_2026-05-04-18-29-48-648_com.parastud.houseofedtech.jpg?ex=69f9eaa3&is=69f89923&hm=6b82482e13fe5724f58face0b9dc28b715893816dd29667e870711c274d8dd8d&=&format=webp&width=401&height=890) |
 
 | Course Detail | WebView | AI Mentor |
 |---------------|---------|-----------|
-| ![Detail](assets/screenshots/detail.png) | ![WebView](assets/screenshots/webview.png) | ![AI](assets/screenshots/ai_mentor.png) |
+| ![Detail](https://media.discordapp.net/attachments/717998252602949632/1500845331653333144/Screenshot_2026-05-04-18-30-13-853_com.parastud.houseofedtech.jpg?ex=69f9eaa3&is=69f89923&hm=2370a296fb976451bcb0d1ddb4bbdba5798ed0e4fc31adcf864f0c15dd9bc60e&=&format=webp&width=401&height=890) | ![WebView](https://media.discordapp.net/attachments/717998252602949632/1500845328570650764/Screenshot_2026-05-04-18-30-22-855_com.parastud.houseofedtech.jpg?ex=69f9eaa2&is=69f89922&hm=4fc70b8d9f8a39700ff119c1682a4eadf02245bf759532d80697c2508999c93a&=&format=webp&width=401&height=890) | ![AI](https://media.discordapp.net/attachments/717998252602949632/1500845328923099346/Screenshot_2026-05-04-18-30-31-598_com.parastud.houseofedtech.jpg?ex=69f9eaa2&is=69f89922&hm=034fde20bd749f06b94b50612be7c4d2375a5bddc9974907f02ca5444fdac62e&=&format=webp&width=401&height=890) |
 
 | Bookmarks | Profile | Offline Banner |
 |-----------|---------|----------------|
-| ![Bookmarks](assets/screenshots/bookmarks.png) | ![Profile](assets/screenshots/profile.png) | ![Offline](assets/screenshots/offline.png) |
+| ![Bookmarks](https://media.discordapp.net/attachments/717998252602949632/1500845329224831076/Screenshot_2026-05-04-18-30-57-591_com.parastud.houseofedtech.jpg?ex=69f9eaa2&is=69f89922&hm=efcf6b251de8e96becb9f2ae28c42218388c4054bfbef2d558ed3aec80888d08&=&format=webp&width=401&height=890) | ![Profile](https://media.discordapp.net/attachments/717998252602949632/1500845329644388482/Screenshot_2026-05-04-18-31-02-126_com.parastud.houseofedtech.jpg?ex=69f9eaa2&is=69f89922&hm=b67fee180ab7a066d67045b3d40c15e2550f6744645188a63ded6d452fd9a4dd&=&format=webp&width=401&height=890) | ![Offline](https://media.discordapp.net/attachments/717998252602949632/1500845329904570518/Screenshot_2026-05-04-18-31-20-825_com.parastud.houseofedtech.jpg?ex=69f9eaa3&is=69f89923&hm=da178ced02971310922c2b3e8bc313000f32be72a19c6d2a1bb9d2e66bc03897&=&format=webp&width=401&height=890) |
 
 ---
 
