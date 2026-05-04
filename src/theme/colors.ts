@@ -78,6 +78,8 @@ export const Colors = {
   textOnPrimary: Palette.white,
   textLink: Palette.indigo600,
 
+  placeholder: Palette.gray400,
+
   // Border
   border: Palette.gray200,
   borderFocus: Palette.indigo500,

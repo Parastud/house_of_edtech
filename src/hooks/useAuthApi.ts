@@ -117,7 +117,7 @@ export const useAuthApi = (): UseAuthApiReturn => {
   const logout = async (): Promise<boolean> => {
     try {
       setIsLoading(true);
-      await logoutService().catch(() => {}); // best-effort server logout
+      await logoutService().catch(() => {});
       await clearAuthTokens();
       await clearAppData();
       dispatch(clearUser());

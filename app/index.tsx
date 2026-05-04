@@ -24,7 +24,7 @@ export default function Index() {
         if (token) {
           const userData = await getCurrentUserService();
           if (userData.success) {
-            const user = userData.data.data;
+            const user = userData.data;
             dispatch(
               setUser({
                 id: user._id,

@@ -1,12 +1,10 @@
-// ─── Expo SecureStore Keys ────────────────────────────────────────────────────
-// Sensitive data only — tokens, credentials
+
 export const SECURE_STORE_KEYS = {
   ACCESS_TOKEN: 'lms_access_token',
   REFRESH_TOKEN: 'lms_refresh_token',
 } as const;
 
-// ─── AsyncStorage Keys ────────────────────────────────────────────────────────
-// Non-sensitive app data — bookmarks, preferences, cache
+
 export const ASYNC_STORAGE_KEYS = {
   BOOKMARKS: 'lms_bookmarks',
   ENROLLED_COURSES: 'lms_enrolled_courses',

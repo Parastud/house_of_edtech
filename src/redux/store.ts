@@ -3,6 +3,7 @@ import {
   scheduleBookmarkMilestoneNotification,
 } from '@/src/services/notification.service';
 import { configureStore, Middleware } from '@reduxjs/toolkit';
+import aiMentorReducer from './slices/aiMentor.slice';
 import authReducer from './slices/auth.slice';
 import bookmarkReducer, {
   addBookmark,
@@ -46,6 +47,7 @@ export const store = configureStore({
     bookmarks: bookmarkReducer,
     courses: courseReducer,
     network: networkReducer,
+    aiMentor: aiMentorReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

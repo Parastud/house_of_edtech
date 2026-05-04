@@ -1,3 +1,5 @@
+import { MentorFAB } from '@/src/components/AIMentor/MentorFAB';
+import { MentorSheet } from '@/src/components/AIMentor/MentorSheet';
 import { useAppSelector } from '@/src/redux/hook';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Tabs, useRouter } from 'expo-router';
@@ -102,7 +104,6 @@ const CustomTabBar: React.FC<BottomTabBarProps & { bookmarkCount: number }> = ({
               target: route.key,
               canPreventDefault: true,
             });
-
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate(route.name);
             }
@@ -154,22 +155,30 @@ export default function TabsLayout() {
   }, [isAuthorized, isBootstrapping, router]);
 
   return (
-    <Tabs
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: false,
-      }}
-      tabBar={(props) => <CustomTabBar {...props} bookmarkCount={bookmarkCount} />}
-    >
-      <Tabs.Screen name="index" />
-      <Tabs.Screen name="courses" />
-      <Tabs.Screen name="bookmarks" />
-      <Tabs.Screen name="profile" />
-    </Tabs>
+    // ✅ Wrap in View so FAB and Sheet can be positioned relative to this container
+    <View style={styles.root}>
+      <Tabs
+        screenOptions={{
+          headerShown: false,
+          tabBarShowLabel: false,
+        }}
+        tabBar={(props) => <CustomTabBar {...props} bookmarkCount={bookmarkCount} />}
+      >
+        <Tabs.Screen name="index" />
+        <Tabs.Screen name="courses" />
+        <Tabs.Screen name="bookmarks" />
+        <Tabs.Screen name="profile" />
+      </Tabs>
+      <MentorFAB />
+      <MentorSheet />
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   tabBarShell: {
     backgroundColor: Colors.surface,
     borderTopWidth: 1,
@@ -241,18 +250,4 @@ const styles = StyleSheet.create({
   tabLabelActive: {
     fontFamily: FONTS.SEMIBOLD,
   },
-  tabBar: {
-    backgroundColor: Colors.surface,
-    borderTopWidth: 1,
-    borderTopColor: Colors.border,
-    height: 72,
-    paddingBottom: 12,
-    paddingTop: 8,
-    shadowColor: Colors.primary,
-    shadowOffset: { width: 0, height: -4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 12,
-    elevation: 12,
-  },
-  // kept for reference if you want to quickly rollback to stock tab style
 });
