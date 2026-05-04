@@ -1,4 +1,4 @@
-import { CustomSplash } from '@/src/components/common/CustomSplash';
+import { SplashScreen } from '@/src/components/common/SplashScreen';
 import { useBookmarks } from '@/src/hooks/useBookmarks';
 import { useAppDispatch, useAppSelector } from '@/src/redux/hook';
 import { setAuthorizationStatus, setBootstrapping } from '@/src/redux/slices/auth.slice';
@@ -70,5 +70,5 @@ export default function Index() {
     }
   }, [isAuthorized, isSplashVisible, isBootstrapping, router]);
 
-  return <CustomSplash onFinish={() => {}} />;
+  return <SplashScreen onFinish={() => { }} />;
 }

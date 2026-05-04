@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import {
-    ActivityIndicator,
-    Animated,
-    StyleSheet,
-    View,
+  ActivityIndicator,
+  Animated,
+  StyleSheet,
+  View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Colors } from '../../theme/colors';
@@ -14,7 +14,7 @@ interface CustomSplashProps {
   onFinish: () => void;
 }
 
-export const CustomSplash: React.FC<CustomSplashProps> = ({ onFinish }) => {
+export const SplashScreen: React.FC<CustomSplashProps> = ({ onFinish }) => {
   const fadeInAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
 

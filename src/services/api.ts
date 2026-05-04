@@ -19,20 +19,17 @@ import {
     saveRefreshToken,
 } from '../utils/localStorageKey';
 
-// ─── Augment config to track retry state ─────────────────────────────────────
 interface RetryConfig extends InternalAxiosRequestConfig {
     _retryCount?: number;
     _isRetry?: boolean;
 }
 
-// ─── Create instance ──────────────────────────────────────────────────────────
 const api: AxiosInstance = axios.create({
     baseURL: BASEURL,
     timeout: API_TIMEOUT_MS,
     headers: { 'Content-Type': 'application/json' },
 });
 
-// ─── Request interceptor — attach access token ────────────────────────────────
 api.interceptors.request.use(
     async (config: RetryConfig) => {
         const token = await getAccessToken();
@@ -44,7 +41,6 @@ api.interceptors.request.use(
     (error) => Promise.reject(error),
 );
 
-// ─── Track in-flight token refresh to avoid parallel refresh races ────────────
 let isRefreshing = false;
 let failedQueue: Array<{
     resolve: (token: string) => void;

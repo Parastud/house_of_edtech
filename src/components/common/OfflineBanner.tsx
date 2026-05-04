@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
   text: {
     color: Colors.offlineBannerText,

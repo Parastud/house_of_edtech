@@ -103,13 +103,10 @@ export default function ProfileScreen() {
                 <View style={styles.headerBg}>
                     <View style={styles.avatarContainer}>
                         <Image
-                            source={
-                                user.avatarUrl
-                                    ? { uri: user.avatarUrl }
-                                    : Images.avatarPlaceholder
-                            }
+                            source={ { uri: user.avatarUrl } }
                             style={styles.avatar}
                             contentFit="cover"
+                            placeholder={Images.avatarPlaceholder}
                         />
                         <TouchableOpacity
                             style={styles.cameraBtn}

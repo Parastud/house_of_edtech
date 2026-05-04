@@ -11,7 +11,8 @@ export const PAGE_SIZE = 10;
 
 // ─── Notifications ────────────────────────────────────────────────────────────
 export const BOOKMARK_NOTIFICATION_THRESHOLD = 5;
-export const INACTIVITY_NOTIFICATION_HOURS = 24;
+export const INACTIVITY_NOTIFICATION_HOURS = 0.002;
+// export const INACTIVITY_NOTIFICATION_HOURS = 24;
 export const BACKGROUND_FETCH_TASK = 'LMS_INACTIVITY_CHECK';
 
 // ─── Bookmarks ────────────────────────────────────────────────────────────────
