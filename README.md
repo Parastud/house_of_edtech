@@ -1,197 +1,197 @@
-# 📚 House of EdTech — Mini LMS Mobile App
+# 🎓 House of EdTech — Mini LMS Mobile App
 
-> **React Native Expo Developer Assignment Submission**
-> Submitted by **Parth Sharma**
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#overview)
-- [Tech Stack](#tech-stack)
-- [Architecture Decisions](#architecture-decisions)
-- [Project Structure](#project-structure)
-- [Setup & Installation](#setup--installation)
-- [Environment Variables](#environment-variables)
-- [Features Implemented](#features-implemented)
-- [Screenshots](#screenshots)
-- [APK Build](#apk-build)
-- [Demo Video](#demo-video)
-- [Known Issues & Limitations](#known-issues--limitations)
+A production-grade Learning Management System built with React Native Expo, TypeScript, Redux Toolkit, and OpenAI — submitted as part of the House of EdTech React Native Developer assignment.
 
 ---
 
-## Overview
+## 📱 Demo
 
-House of EdTech is a production-grade Mini Learning Management System built as part of the React Native Expo developer technical assignment. The app demonstrates end-to-end mobile development proficiency — from authentication and native integrations to WebView communication, state management, and performance optimization.
-
-The API used is [api.freeapi.app](https://api.freeapi.app), where:
-- `/api/v1/public/randomproducts` is treated as the **course catalog**
-- `/api/v1/public/randomusers` is treated as **course instructors**
-
----
-
-## Tech Stack
-
-| Layer | Technology |
+| | |
 |---|---|
-| Framework | React Native + Expo SDK 52 |
-| Language | TypeScript (strict mode) |
-| Navigation | Expo Router v4 (file-based) |
-| State Management | Redux Toolkit |
-| Styling | NativeWind v4 + StyleSheet (mixed) |
-| Sensitive Storage | Expo SecureStore |
-| App Data Storage | AsyncStorage |
-| HTTP Client | Axios (interceptors + retry) |
-| Images | expo-image (built-in caching) |
-| List Virtualization | @legendapp/list |
-| Notifications | expo-notifications + expo-background-fetch |
-| WebView | react-native-webview |
-| Network Monitoring | @react-native-community/netinfo |
+| **Demo Video** | [Watch on YouTube](#) ← paste your link here |
+| **APK Download** | [Download APK](#) ← paste your EAS / Drive link here |
+| **GitHub** | [github.com/Parastud/house_of_edtech](https://github.com/Parastud/house_of_edtech) |
 
 ---
 
-## Architecture Decisions
+## 📸 Screenshots
 
-### 1. Mixed Styling Strategy (NativeWind + StyleSheet)
+| Splash | Login | Courses |
+|--------|-------|---------|
+| ![Splash](assets/screenshots/splash.png) | ![Login](assets/screenshots/login.png) | ![Courses](assets/screenshots/courses.png) |
 
-Rather than committing exclusively to one approach, a deliberate mixed strategy is used:
+| Course Detail | WebView | AI Mentor |
+|---------------|---------|-----------|
+| ![Detail](assets/screenshots/detail.png) | ![WebView](assets/screenshots/webview.png) | ![AI](assets/screenshots/ai_mentor.png) |
 
-- **NativeWind `className`** — static layout, spacing, flex, padding, border radius
-- **`StyleSheet.create()`** — complex multi-property groups reused across 3+ components, cross-platform shadows (iOS `shadowColor` + Android `elevation` cannot be expressed cleanly in Tailwind)
-- **`style={{ fontFamily: FONTS.X }}`** — always inline for custom fonts, since NativeWind does not load or resolve custom font families
+| Bookmarks | Profile | Offline Banner |
+|-----------|---------|----------------|
+| ![Bookmarks](assets/screenshots/bookmarks.png) | ![Profile](assets/screenshots/profile.png) | ![Offline](assets/screenshots/offline.png) |
 
-### 2. Centralized Theme System
+---
 
-All design tokens live in `src/theme/` and are the **single source of truth**:
+## ⚙️ Setup Instructions
 
-```
-src/theme/
-├── colors.ts       → Colors.primary, Colors.error, etc.
-├── fonts.ts        → FONTS.BOLD, FONTS.SEMIBOLD, FontSize.md, etc.
-├── icons.ts        → ICON_NAMES.home, <Icon name={...} />, etc.
-├── images.ts       → Images.avatarPlaceholder, etc.
-└── styles.global.ts → GlobalStyles.cardShadow, GlobalStyles.screen, etc.
-```
+### Prerequisites
 
-Components never hardcode hex values, font strings, or icon names. This makes design-wide changes a single-file edit.
+- Node.js 18+
+- Expo CLI — `npm install -g expo-cli`
+- EAS CLI (for APK builds) — `npm install -g eas-cli`
+- An Android device or emulator / iOS simulator
 
-### 3. Typography via AppText
+### 1. Clone the repo
 
-All text in the app flows through `<AppText variant="...">`. The `variant` prop maps to a complete style preset (font family + size + color + line height). This enforces consistency and makes font changes trivially easy.
-
-```tsx
-// ✅ Always this
-<AppText variant="h2">Title</AppText>
-<AppText variant="bodySm" color={Colors.textSecondary}>Subtitle</AppText>
-
-// ❌ Never this
-<Text style={{ fontFamily: 'Poppins-Bold', fontSize: 24 }}>Title</Text>
+```bash
+git clone https://github.com/Parastud/house_of_edtech.git
+cd house_of_edtech
 ```
 
-### 4. Service → Hook → Redux Flow
+### 2. Install dependencies
 
-API calls follow a strict one-way data flow:
-
-```
-Service (API call) → Hook (business logic + dispatch) → Redux Slice (state) → Component (render)
+```bash
+npm install
 ```
 
-- **Services** (`src/services/`) — pure Axios calls, no business logic
-- **Hooks** (`src/hooks/`) — orchestrate services, dispatch Redux actions, manage local loading state
-- **Slices** (`src/redux/slices/`) — pure reducers, no side effects
-- **Components/Screens** — consume Redux state, call hooks, render UI
+### 3. Set up environment variables
 
-### 5. Token Storage Strategy
+Create a `.env` file in the root of the project:
 
-| Data | Storage | Reason |
+```env
+EXPO_PUBLIC_BASE_URL=https://api.freeapi.app
+EXPO_PUBLIC_OPENAI_KEY=sk-your-openai-key-here
+```
+
+> The `EXPO_PUBLIC_` prefix is required by Expo — it makes the variable available in the JavaScript bundle. Never put secrets without this prefix in `.env` if they need to reach the client.
+
+### 4. Start the development server
+
+```bash
+npx expo start
+```
+
+Scan the QR code with Expo Go (Android) or the Camera app (iOS).
+
+### 5. Run on a specific platform
+
+```bash
+npx expo start --android
+npx expo start --ios
+```
+
+---
+
+## 🏗️ Build APK
+
+### Development build (recommended for testing)
+
+```bash
+eas build --platform android --profile development
+```
+
+### Preview APK (shareable, no store)
+
+```bash
+eas build --platform android --profile preview
+```
+
+After the build finishes, EAS will give you a download link. You can also find all builds at [expo.dev](https://expo.dev).
+
+> Make sure you're logged into EAS: `eas login`
+
+---
+
+## 🌍 Environment Variables
+
+| Variable | Required | Description |
 |---|---|---|
-| Access token | Expo SecureStore | Encrypted, OS-level protection |
-| Refresh token | Expo SecureStore | Same — sensitive credential |
-| Bookmarks | AsyncStorage + Redux | Non-sensitive, needs fast reads |
-| Enrolled courses | AsyncStorage + Redux | Non-sensitive app data |
-| Course cache | AsyncStorage | Non-sensitive, 5-min TTL |
-| UI state | Redux only | Never needs to persist |
-
-### 6. Axios Retry with Exponential Backoff
-
-The `api.ts` instance handles three failure scenarios automatically:
-
-- **401** → attempts token refresh once, queues parallel requests during refresh (race condition safe), retries original request with new token
-- **Network errors / 5xx** → retries up to 3 times with delays of 500ms → 1000ms → 2000ms
-- **4xx client errors** → no retry (not transient)
-
-### 7. Bookmark Milestone Notification via Redux Middleware
-
-The 5-bookmark notification trigger is implemented as a **Redux middleware**, not a `useEffect`. This means:
-- Logic is completely decoupled from any component
-- It fires reliably regardless of which screen the user is on
-- No cleanup or dependency array concerns
-
-### 8. LegendList for Course Lists
-
-`@legendapp/list` is used instead of React Native's built-in `FlatList` for both the course catalog and bookmarks screen. All performance props are set:
-
-```tsx
-<LegendList
-  recycleItems          // recycles item instances instead of unmounting
-  estimatedItemSize={320}
-  keyExtractor={(item) => item.id}
-  renderItem={renderItem}  // wrapped in React.memo with custom comparator
-/>
-```
-
-`CourseCard` uses a custom `memo` comparator that only re-renders when `isBookmarked`, `isEnrolled`, or handlers actually change — not on every parent render.
-
-### 9. WebView Bidirectional Communication
-
-```
-Native → WebView:  webViewRef.current?.injectJavaScript(...)
-WebView → Native:  window.ReactNativeWebView.postMessage(JSON.stringify(payload))
-```
-
-Message types:
-- `WEBVIEW_READY` — WebView signals it's loaded; native sends initial bookmark state
-- `BOOKMARK_UPDATE` — native sends when user toggles bookmark; WebView updates UI
-- `ENROLL` — WebView sends when user taps Enroll; native updates Redux + AsyncStorage
+| `EXPO_PUBLIC_BASE_URL` | ✅ Yes | FreeAPI base URL — `https://api.freeapi.app` |
+| `EXPO_PUBLIC_OPENAI_KEY` | ✅ Yes | OpenAI API key for the AI Mentor feature |
 
 ---
 
-## Project Structure
+## 🗂️ Folder Structure
 
 ```
 house_of_edtech/
-├── app/                              ← Expo Router pages (thin wrappers)
-│   ├── _layout.tsx                   ← Root layout: fonts, Redux, ErrorBoundary
-│   ├── index.tsx                     ← Splash + auth bootstrap + redirect guard
+│
+├── app/                          # Expo Router pages (thin wrappers)
+│   ├── _layout.tsx               # Root layout — Redux, fonts, SafeArea
+│   ├── index.tsx                 # Entry point redirect
 │   ├── (auth)/
 │   │   ├── _layout.tsx
 │   │   ├── login.tsx
 │   │   └── register.tsx
 │   └── (tabs)/
-│       ├── _layout.tsx               ← Custom tab bar with badge support
-│       ├── index.tsx                 ← Home screen
-│       ├── bookmarks.tsx             ← Saved courses
-│       ├── profile.tsx               ← User profile
+│       ├── _layout.tsx           # Tab bar + AI Mentor FAB + Sheet
+│       ├── index.tsx             # Home screen
+│       ├── bookmarks.tsx         # Saved courses
+│       ├── profile.tsx           # User profile
 │       └── courses/
-│           ├── _layout.tsx           ← Stack navigator for course flow
-│           ├── index.tsx             ← Course list
-│           ├── [id].tsx              ← Course detail
+│           ├── _layout.tsx
+│           ├── index.tsx         # Course list
+│           ├── [id].tsx          # Course detail
 │           └── webview/
-│               └── course.tsx        ← WebView screen
+│               └── course.tsx    # WebView screen
 │
 ├── src/
-│   ├── theme/
-│   │   ├── colors.ts                 ← Semantic color tokens
-│   │   ├── fonts.ts                  ← FONTS constant + FontSize scale
-│   │   ├── icons.ts                  ← ICON_NAMES + <Icon /> component
-│   │   ├── images.ts                 ← Static asset registry
-│   │   └── styles.global.ts          ← Shared StyleSheet objects
+│   ├── components/
+│   │   ├── AIMentor/             # AI Mentor FAB + bottom sheet
+│   │   │   ├── MentorFAB.tsx
+│   │   │   ├── MentorSheet.tsx
+│   │   │   └── MentorMessage.tsx
+│   │   ├── common/               # Shared components
+│   │   │   ├── AppText.tsx       # All text goes through this
+│   │   │   ├── AppButton.tsx
+│   │   │   ├── AppInput.tsx
+│   │   │   ├── SnackBar.tsx
+│   │   │   ├── OfflineBanner.tsx
+│   │   │   ├── ScreenWrapper.tsx
+│   │   │   ├── CustomSplash.tsx
+│   │   │   ├── ErrorBoundary.tsx
+│   │   │   ├── SkeletonCard.tsx
+│   │   │   └── LoadingOverlay.tsx
+│   │   └── course/
+│   │       ├── CourseCard.tsx    # Memoized with custom comparator
+│   │       └── SearchBar.tsx
 │   │
 │   ├── constants/
-│   │   ├── api.constants.ts          ← All endpoint strings
-│   │   ├── storage.keys.ts           ← All AsyncStorage / SecureStore keys
-│   │   └── app.constants.ts          ← Timeout, retry count, cache TTL, etc.
+│   │   ├── api.constants.ts      # All endpoint strings
+│   │   ├── app.constants.ts      # Timeouts, cache TTL, thresholds
+│   │   └── storage.keys.ts       # SecureStore + AsyncStorage key names
+│   │
+│   ├── hooks/
+│   │   ├── useAuthApi.ts         # Login, register, logout, auto-login
+│   │   ├── useCourseApi.ts       # Fetch, refresh, paginate courses
+│   │   ├── useBookmarks.ts       # Toggle, persist, hydrate bookmarks
+│   │   ├── useNetworkStatus.ts   # NetInfo → Redux network slice
+│   │   ├── useNotifications.ts   # Permissions, listeners, inactivity tracker
+│   │   └── useAIMentor.ts        # OpenAI chat, context building, streaming
+│   │
+│   ├── redux/
+│   │   ├── store.ts              # Store config + bookmark milestone middleware
+│   │   ├── hook.ts               # useAppDispatch, useAppSelector
+│   │   └── slices/
+│   │       ├── auth.slice.ts
+│   │       ├── user.slice.ts
+│   │       ├── course.slice.ts
+│   │       ├── bookmark.slice.ts
+│   │       ├── network.slice.ts
+│   │       ├── snackbar.slice.ts
+│   │       └── aiMentor.slice.ts
+│   │
+│   ├── services/
+│   │   ├── api.ts                # Axios instance — interceptors, retry, refresh
+│   │   ├── auth.service.ts
+│   │   ├── course.service.ts
+│   │   ├── notification.service.ts
+│   │   └── ai.service.ts         # OpenAI call + system prompt builder
+│   │
+│   ├── theme/
+│   │   ├── colors.ts             # Semantic color tokens 
+│   │   ├── fonts.ts              # FONTS constant + FontSize scale
+│   │   ├── icons.ts              # Centralized Icon component + ICON_NAMES
+│   │   ├── images.ts             # Asset registry
+│   │   └── styles.global.ts      # Shared StyleSheet objects
 │   │
 │   ├── types/
 │   │   ├── auth.types.ts
@@ -199,326 +199,172 @@ house_of_edtech/
 │   │   ├── user.types.ts
 │   │   └── navigation.types.ts
 │   │
-│   ├── services/
-│   │   ├── api.ts                    ← Axios instance: interceptors, retry, refresh
-│   │   ├── auth.service.ts
-│   │   ├── course.service.ts
-│   │   └── notification.service.ts
-│   │
-│   ├── redux/
-│   │   ├── store.ts                  ← Store + bookmark milestone middleware
-│   │   ├── hook.ts                   ← Typed useAppDispatch / useAppSelector
-│   │   └── slices/
-│   │       ├── auth.slice.ts
-│   │       ├── user.slice.ts
-│   │       ├── course.slice.ts
-│   │       ├── bookmark.slice.ts
-│   │       ├── snackbar.slice.ts
-│   │       └── network.slice.ts
-│   │
-│   ├── hooks/
-│   │   ├── useAuthApi.ts             ← Login, register, logout, avatar update
-│   │   ├── useCourseApi.ts           ← Fetch, refresh, paginate courses
-│   │   ├── useBookmarks.ts           ← Toggle, hydrate, check bookmark state
-│   │   ├── useNetworkStatus.ts       ← NetInfo → Redux network slice
-│   │   └── useNotifications.ts       ← Permission, scheduling, tap handlers
-│   │
-│   ├── components/
-│   │   ├── common/
-│   │   │   ├── AppText.tsx           ← Typography system (all text goes here)
-│   │   │   ├── AppButton.tsx
-│   │   │   ├── AppInput.tsx
-│   │   │   ├── ScreenWrapper.tsx     ← Root container for all screens
-│   │   │   ├── CustomSplash.tsx      ← Animated splash screen
-│   │   │   ├── SnackBar.tsx          ← Redux-driven toast (animated)
-│   │   │   ├── OfflineBanner.tsx     ← Network status banner (animated)
-│   │   │   ├── ErrorBoundary.tsx     ← React class error boundary
-│   │   │   ├── SkeletonCard.tsx      ← Shimmer loading placeholder
-│   │   │   └── LoadingOverlay.tsx
-│   │   └── course/
-│   │       ├── CourseCard.tsx        ← Memoized list item with custom comparator
-│   │       └── SearchBar.tsx         ← Debounced search input
-│   │
-│   ├── screens/
-│   │   ├── auth/
-│   │   │   ├── LoginScreen.tsx
-│   │   │   └── RegisterScreen.tsx
-│   │   ├── courses/
-│   │   │   ├── CourseListScreen.tsx
-│   │   │   └── CourseDetailScreen.tsx
-│   │   ├── profile/
-│   │   │   └── ProfileScreen.tsx
-│   │   └── webview/
-│   │       └── WebViewScreen.tsx
-│   │
 │   └── utils/
-│       ├── localStorageKey.ts        ← SecureStore + AsyncStorage helpers
-│       ├── utils.ts                  ← getErrorMessage, normalizers, debounce
-│       └── webviewTemplate.ts        ← HTML template builder for WebView
+│       ├── localStorageKey.ts    # SecureStore + AsyncStorage helpers
+│       ├── utils.ts              
+│       └── webviewTemplate.ts    # Local HTML template builder for WebView
 │
 ├── assets/
-│   └── fonts/                        ← Poppins font files (.ttf)
+│   └── fonts/                    # Poppins font files
 │
-├── app.json
-├── app.env.ts
+├── app.env.ts                    # Typed env variable exports
+├── app.json                      # Expo config
 ├── babel.config.js
 ├── metro.config.js
 ├── tailwind.config.js
-├── tsconfig.json
-├── global.css
-└── package.json
+└── tsconfig.json
 ```
 
 ---
 
-## Setup & Installation
+## 🧠 Key Architectural Decisions
 
-### Prerequisites
+### 1. Expo SecureStore for tokens — not AsyncStorage
 
-- Node.js 18+
-- npm or yarn
-- Expo CLI (`npm install -g expo-cli`)
-- EAS CLI for builds (`npm install -g eas-cli`)
-- Android Studio or Xcode (for simulators)
+Access tokens and refresh tokens are stored exclusively in Expo SecureStore, which uses the device's hardware-backed keystore (Android Keystore / iOS Keychain). AsyncStorage writes plaintext to disk. For anything auth-related, that's not acceptable.
 
-### Steps
+### 2. Token refresh with a parallel request queue
 
-```bash
-# 1. Clone the repository
-git clone https://github.com/Parastud/house_of_edtech.git
-cd house_of_edtech
+When a 401 comes back, the axios interceptor doesn't just retry naively. It sets a `isRefreshing` flag and queues any other requests that arrive during the refresh. Once the new token is returned, the queue is flushed. Without this, two simultaneous 401s would fire two refresh calls and create a race condition.
 
-# 2. Install dependencies
-npm install
-
-# 3. Set up environment variables
-cp .env.example .env
-# Edit .env with your values (see Environment Variables section)
-
-# 4. Add Poppins fonts to assets/fonts/
-# Download from https://fonts.google.com/specimen/Poppins
-# Required files:
-#   Poppins-Regular.ttf
-#   Poppins-Medium.ttf
-#   Poppins-SemiBold.ttf
-#   Poppins-Bold.ttf
-#   Poppins-ExtraBold.ttf
-
-# 5. Start the development server
-npx expo start
-
-# 6. Run on device/emulator
-npx expo start --android    # Android
-npx expo start --ios        # iOS (macOS only)
+```
+Request A → 401 → starts refresh
+Request B → 401 → sees isRefreshing → joins queue
+Refresh completes → both A and B retry with new token
 ```
 
----
+### 3. Axios retry with exponential backoff
 
-## Environment Variables
+Network errors and 5xx responses are retried up to 3 times with delays of 500ms, 1000ms, and 2000ms. 4xx errors are not retried — they're client errors that won't resolve by retrying.
 
-Create a `.env` file in the project root:
+### 4. Bookmark milestone notification in Redux middleware — not useEffect
 
-```env
-EXPO_PUBLIC_BASE_URL=https://api.freeapi.app
-EXPO_PUBLIC_APP_ENV=development
-```
+The 5-bookmark notification trigger lives in a custom Redux middleware, not in a component or hook. This means it fires regardless of which screen the user is on, and it's not tied to any component's lifecycle. A `milestoneNotified` flag in the bookmark slice ensures it only fires once, not every time the count crosses 5.
 
-All environment variables use the `EXPO_PUBLIC_` prefix so they are accessible client-side in Expo.
+### 5. Course cache with TTL
 
----
+On first load, courses are fetched from the API and written to AsyncStorage with a timestamp. On subsequent loads, the timestamp is checked — if it's under 5 minutes old, the cache is used directly. Pull-to-refresh always bypasses the cache. This means returning users see content instantly without a network round trip.
 
-## Features Implemented
+### 6. LegendList over FlatList
 
-### ✅ Part 1 — Authentication & User Management
+The course list uses `@legendapp/list` (LegendList) with `recycleItems` enabled. FlatList unmounts and remounts cells as the user scrolls, which causes GC pressure at scale. LegendList recycles the cell instances instead, keeping memory flat regardless of list length.
 
-| Feature | Details |
-|---|---|
-| Login | Email + password via `/api/v1/users/login` |
-| Register | Username + email + password via `/api/v1/users/register` |
-| Token storage | Access + refresh tokens in Expo SecureStore |
-| Auto-login | On app start: reads token → validates via `/api/v1/users/current-user` → sets Redux state |
-| Auth guard | `app/index.tsx` redirects based on `isAuthorized` state |
-| Logout | Server logout (best-effort) + clears SecureStore + AsyncStorage + Redux |
-| Token refresh | Axios interceptor: 401 → refresh → retry with queue to handle parallel requests |
-| Profile screen | Avatar, username, email, enrolled count, bookmarks count |
-| Avatar update | Image picker → `PATCH /api/v1/users/avatar` (multipart/form-data) |
+### 7. CourseCard memoized with a custom comparator
 
-### ✅ Part 2 — Course Catalog
+`CourseCard` is wrapped in `React.memo` with a custom comparator that only re-renders when the fields actually visible on the card change — title, thumbnail, instructor name, price, or bookmark state. Without this, every Redux state change would re-render every card in the list.
 
-| Feature | Details |
-|---|---|
-| Course list | Fetches products + users in parallel, pairs by index modulo |
-| Course card | Thumbnail, instructor avatar + name, title, description, category badge, bookmark icon |
-| Pull-to-refresh | Bypasses cache, always hits API |
-| Infinite scroll | Fetches next page on `onEndReached` |
-| Search | Client-side, debounced 350ms, filters title / description / category / instructor |
-| Skeleton loading | Shimmer cards shown on initial load |
-| Empty state | Shown when search returns no results |
-| Error state | Shown with retry option when API fails |
-| Cache | Course data cached in AsyncStorage with 5-minute TTL |
-| Course detail | Full info: title, description, category, rating, price + discount, brand |
-| Instructor card | Avatar, name, location, email |
-| Enroll | Updates Redux + persists to AsyncStorage, button disabled after enrollment |
-| Bookmark toggle | Updates Redux + AsyncStorage, shows snackbar |
+### 8. AI Mentor with live Redux context
 
-### ✅ Part 3 — WebView Integration
+The AI Mentor's system prompt is not static. On every message, `useAIMentor` pulls the current Redux state — course catalog, bookmarked IDs, enrolled IDs, username — and builds the system prompt fresh. This makes the AI genuinely contextual: it knows what the user has saved and enrolled in, and it only recommends courses that actually exist in the catalog.
 
-| Feature | Details |
-|---|---|
-| Local HTML shell | Built from course data via `buildCourseWebViewHTML()` — no network request |
-| Course data in WebView | Title, description, instructor, price, rating, category all rendered |
-| Native → WebView | Bookmark state sent via `injectJavaScript` on load and on toggle |
-| WebView → Native | `WEBVIEW_READY` and `ENROLL` messages handled |
-| Enroll from WebView | Updates Redux state + persists AsyncStorage |
-| Loading indicator | `ActivityIndicator` shown while HTML renders |
-| Error fallback | Full error UI with retry button on `onError` |
+### 9. Mixed NativeWind + StyleSheet styling
 
-### ✅ Part 4 — Native Features
+Static layout, spacing, and flex → `className` (NativeWind).  
+Complex multi-property groups like card shadows and tab bar styles → `StyleSheet.create()`.  
+Custom font families always → `style={{ fontFamily: FONTS.BOLD }}` because NativeWind doesn't resolve custom fonts.  
+Dynamic colors driven by JS state → inline `style={{ color: isActive ? Colors.primary : Colors.muted }}`.
 
-| Feature | Details |
-|---|---|
-| Notification permission | Requested on first bookmark |
-| Android channel | Created at app start via `setupAndroidNotificationChannel()` |
-| Bookmark milestone | Fires once at 5+ bookmarks — implemented in Redux middleware |
-| Milestone guard | `milestoneNotified` flag in Redux prevents re-firing |
-| Inactivity notification | Scheduled 24hrs after last open, cancelled + rescheduled on every open |
-| Background fetch | `expo-background-fetch` task registered for inactivity check |
-| Notification tap | Bookmark milestone → Bookmarks tab, Inactivity → Courses tab |
+### 10. Theme system — nothing hardcoded in components
 
-### ✅ Part 5 — State Management & Performance
-
-| Feature | Details |
-|---|---|
-| Redux slices | auth, user, courses, bookmarks, snackbar, network |
-| Persistence | Tokens → SecureStore, bookmarks + enrolled → AsyncStorage |
-| Network state | `NetInfo` listener → `network.slice` → `OfflineBanner` |
-| LegendList | Used on course list + bookmarks, with `recycleItems` + `estimatedItemSize` |
-| CourseCard memo | Custom comparator — only re-renders on `isBookmarked`, `isEnrolled`, handler changes |
-| Debounced search | 350ms debounce via custom `debounce` util |
-
-### ✅ Part 6 — Error Handling
-
-| Feature | Details |
-|---|---|
-| API retry | 3 attempts, exponential backoff: 500ms → 1000ms → 2000ms |
-| Timeout | 10 seconds on all requests |
-| Error messages | Extracted from server response or error type via `getErrorMessage()` |
-| Offline banner | Animated slide-in/out driven by Redux network slice |
-| WebView error | Error UI with retry button on `onError` |
-| Error boundary | Class component wraps entire app tree |
+Every color goes through `Colors` from `src/theme/colors.ts`. Every font family goes through `FONTS` from `src/theme/fonts.ts`. Every icon goes through `ICON_NAMES` from `src/theme/icons.ts`. No component ever contains a raw hex value, a hardcoded font string, or an inline `require()` for an asset. This means changing the entire app's color scheme is a single-file change.
 
 ---
 
-## Screenshots
+## ✅ Requirements Coverage
 
-> **Note:** Replace the placeholders below with actual screenshots before final submission.
+### Part 1 — Authentication & User Management
+- ✅ Login and register via `/api/v1/users` endpoints
+- ✅ Access + refresh tokens stored in Expo SecureStore
+- ✅ Auto-login on app restart — token validated silently against `/current-user`
+- ✅ Logout — clears SecureStore, AsyncStorage, and all Redux slices
+- ✅ Token refresh — interceptor with parallel queue pattern
+- ✅ Profile screen — username, email, verified badge, stats
+- ✅ Avatar update — image picker → multipart upload to `/api/v1/users/avatar`
 
-### Authentication
+### Part 2 — Course Catalog
+- ✅ Fetches instructors from `/api/v1/public/randomusers`
+- ✅ Fetches courses from `/api/v1/public/randomproducts`
+- ✅ Paired by index — every course has a real instructor
+- ✅ Course card: thumbnail, instructor, title, description, bookmark icon
+- ✅ Pull-to-refresh — always bypasses cache
+- ✅ Search — debounced, filters across title, description, category, instructor
+- ✅ Infinite scroll pagination
+- ✅ Skeleton loading on initial fetch
+- ✅ Error state with retry button
+- ✅ AsyncStorage cache with 5-minute TTL
+- ✅ Course detail — full info, enroll button, bookmark toggle, WebView link
 
-| Login Screen | Register Screen |
-|---|---|
-| ![Login](./assets/screenshots/login.png) | ![Register](./assets/screenshots/register.png) |
+### Part 3 — WebView
+- ✅ Local HTML template — no external URL
+- ✅ Template built from course data passed by native
+- ✅ Native → WebView: bookmark state injected via `injectJavaScript`
+- ✅ WebView → Native: `postMessage` for enroll action
+- ✅ WebView error fallback UI with retry button
 
-### Course Catalog
+### Part 4 — Native Features
+- ✅ Notification permission request
+- ✅ Android notification channel setup
+- ✅ Bookmark milestone notification at 5 bookmarks (fires once via `milestoneNotified` flag)
+- ✅ Inactivity notification scheduled 24 hours after last app open
+- ✅ AppState listener resets the 24hr window every time app foregrounds
+- ✅ Notification tap routes to correct tab (Bookmarks or Courses)
 
-| Course List | Search Active | Course Detail |
-|---|---|---|
-| ![Course List](./assets/screenshots/course_list.png) | ![Search](./assets/screenshots/search.png) | ![Course Detail](./assets/screenshots/course_detail.png) |
+### Part 5 — State Management & Performance
+- ✅ Auth, user, courses, bookmarks, network, snackbar, aiMentor — all in Redux
+- ✅ Tokens in SecureStore, bookmarks and enrolled IDs in AsyncStorage
+- ✅ LegendList with `recycleItems`, `estimatedItemSize`, `keyExtractor`
+- ✅ CourseCard in `React.memo` with custom comparator
+- ✅ Pull-to-refresh via RefreshControl without UI jank
 
-### WebView & Bookmarks
+### Part 6 — Error Handling
+- ✅ Axios retry — 3 attempts, exponential backoff (500ms, 1000ms, 2000ms)
+- ✅ 10 second request timeout
+- ✅ User-friendly error messages extracted from server response
+- ✅ Offline banner driven by NetInfo → Redux → animated component
+- ✅ WebView error fallback
 
-| WebView Screen | Bookmarks Tab |
-|---|---|
-| ![WebView](./assets/screenshots/webview.png) | ![Bookmarks](./assets/screenshots/bookmarks.png) |
-
-### Profile & States
-
-| Profile Screen | Offline Banner | Skeleton Loading |
-|---|---|---|
-| ![Profile](./assets/screenshots/profile.png) | ![Offline](./assets/screenshots/offline_banner.png) | ![Skeleton](./assets/screenshots/skeleton.png) |
-
----
-
-## APK Build
-
-### Download APK
-
-> 🔗 **APK Download:** _(Add your EAS build link or Google Drive link here)_
-
-### Build Instructions
-
-```bash
-# Install EAS CLI
-npm install -g eas-cli
-
-# Login to Expo account
-eas login
-
-# Build Android APK (development build)
-eas build --platform android --profile preview
-
-# Build Android APK (production)
-eas build --platform android --profile production
-```
-
-**eas.json** (add to project root if not present):
-
-```json
-{
-  "build": {
-    "preview": {
-      "android": {
-        "buildType": "apk"
-      }
-    },
-    "production": {
-      "android": {
-        "buildType": "apk"
-      }
-    }
-  }
-}
-```
+### Bonus — AI Integration
+- ✅ OpenAI GPT-4o Mini — AI Mentor feature
+- ✅ System prompt built dynamically from live Redux state
+- ✅ Rate limit guard — prevents rapid duplicate requests
+- ✅ Offline awareness — blocked when network slice says disconnected
+- ✅ Word-by-word progressive response delivery
 
 ---
 
-## Demo Video
+## 📦 Key Dependencies
 
-> 🎥 **Demo Video:** _(Add your YouTube or Google Drive link here)_
-
-The demo covers:
-- App launch → splash → auto-login flow
-- Register + login flow with validation
-- Course list: loading skeletons → data → search → pull-to-refresh
-- Course detail: enroll + bookmark
-- WebView: course content, enroll from WebView, bookmark sync
-- Bookmarks tab with badge counter
-- Profile screen: avatar update, stats
-- Offline banner when network is lost
-- Notification on 5th bookmark
+| Package | Purpose |
+|---|---|
+| `expo` (SDK 52) | Core framework |
+| `expo-router` | File-based navigation |
+| `@reduxjs/toolkit` | State management |
+| `react-redux` | React bindings for Redux |
+| `axios` | HTTP client with interceptors |
+| `expo-secure-store` | Hardware-backed token storage |
+| `@react-native-async-storage/async-storage` | App data persistence |
+| `@legendapp/list` | High-performance virtualized list |
+| `expo-notifications` | Local push notifications |
+| `expo-background-fetch` | Background inactivity check |
+| `react-native-webview` | Embedded WebView |
+| `nativewind` | Tailwind CSS for React Native |
+| `@react-native-community/netinfo` | Network connectivity monitoring |
+| `expo-image-picker` | Avatar photo selection |
+| `react-native-safe-area-context` | Safe area insets |
 
 ---
 
-## Known Issues & Limitations
+## ⚠️ Known Issues / Limitations
 
-| Issue | Detail |
-|---|---|
-| Background fetch in Expo Go | `expo-background-fetch` is not supported in Expo Go — test on a development build or production APK |
-| Instructor-course pairing | The API returns unrelated random data — instructors are paired with courses by index modulo, so there is no real semantic relationship |
-| Landscape mode | The app is functional in landscape but the list layout is optimized for portrait |
-| Image assets | Placeholder images in `src/assets/images/` need to be added manually — they are not committed to the repo |
-| Token refresh on register | The `api.freeapi.app` register endpoint may not return tokens on all environments — the app handles this gracefully by showing a success message without auto-login if no token is returned |
+- **WebView streaming** — React Native's `fetch` does not support the browser Web Streams API (`response.body.getReader()`). The AI Mentor response is buffered and emitted word-by-word at 18ms intervals to simulate streaming. The UX is identical; only the underlying mechanism differs.
+- **Background fetch on iOS** — Expo's background fetch on iOS requires a development build and specific entitlements. It works on Android. In Expo Go on iOS, background tasks are simulated.
+- **Inactivity notification** — requires the user to have granted notification permission. If denied, the notification is silently skipped.
+- **FreeAPI rate limits** — the public FreeAPI endpoints have rate limits. Rapid pull-to-refresh may return cached data from the server side.
 
 ---
 
-## Submission Details
+## 👤 Author
 
-| Field | Value |
-|---|---|
-| Candidate | Parth Sharma |
-| Position | React Native Expo Developer |
-| Company | House of EdTech |
-| Repository | https://github.com/Parastud/house_of_edtech |
-| APK | _(link)_ |
-| Demo Video | _(link)_ |
-| Submission Deadline | 6th May 2026, 2:00 PM |
+**Parth Sharma**  
+React Native Developer  
+GitHub: [@Parastud](https://github.com/Parastud)
