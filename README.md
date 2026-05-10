@@ -8,8 +8,6 @@ A production-grade Learning Management System built with React Native Expo, Type
 
 | | |
 |---|---|
-| **Demo Video** | [Watch on YouTube](#) ← paste your link here |
-| **APK Download** | [Download APK](#) ← paste your EAS / Drive link here |
 | **GitHub** | [github.com/Parastud/house_of_edtech](https://github.com/Parastud/house_of_edtech) |
 
 ---
